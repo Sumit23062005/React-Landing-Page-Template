@@ -1,6 +1,7 @@
 // components/places.jsx
 import React, { useState, useEffect } from "react";
 import geoapifyService from "../services/geoapifyService";
+import { PlaceDetails } from "./placeDetails";
 import "./places.css";
 
 export const PlacesSection = () => {
@@ -10,6 +11,8 @@ export const PlacesSection = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [selectedPlace, setSelectedPlace] = useState(null);
+  const [showDetails, setShowDetails] = useState(false);
 
   // Set API key on mount
   useEffect(() => {
@@ -63,6 +66,23 @@ export const PlacesSection = () => {
       setIsLoading(false);
     }
   };
+
+  // Handle Get Details button click
+  const handleGetDetails = (beach) => {
+    setSelectedPlace(beach);
+    setShowDetails(true);
+  };
+
+  // Handle back to search
+  const handleBackToSearch = () => {
+    setShowDetails(false);
+    setSelectedPlace(null);
+  };
+
+  // If showing details, render the details page
+  if (showDetails) {
+    return <PlaceDetails place={selectedPlace} onBack={handleBackToSearch} />;
+  }
 
   return (
     <div id="places" className="text-center">
@@ -163,11 +183,11 @@ export const PlacesSection = () => {
                   </div>
 
                   <div className="place-actions">
-                    <button className="btn btn-custom">
-                      <i className="fas fa-directions"></i> Get Directions
-                    </button>
-                    <button className="btn btn-custom-outline">
-                      💾 Save to Trip
+                    <button 
+                      className="btn btn-custom btn-get-details"
+                      onClick={() => handleGetDetails(beach)}
+                    >
+                      <i className="fas fa-info-circle"></i> Get Details
                     </button>
                   </div>
                 </div>

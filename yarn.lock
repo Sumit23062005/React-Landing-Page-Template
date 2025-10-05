@@ -1558,6 +1558,13 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@openmeteo/sdk@^1.21.1":
+  version "1.21.2"
+  resolved "https://registry.npmjs.org/@openmeteo/sdk/-/sdk-1.21.2.tgz"
+  integrity sha512-AaX53PfPMVAaxdvuthRJePLD46eGYoaGQMEW5A0/xuAjigTQncN4WOhrXlOvg8aG8zfQQVUmhKFDHB/+UCUVoQ==
+  dependencies:
+    flatbuffers "^25.2.10"
+
 "@pmmmwh/react-refresh-webpack-plugin@^0.5.3":
   version "0.5.10"
   resolved "https://registry.npmjs.org/@pmmmwh/react-refresh-webpack-plugin/-/react-refresh-webpack-plugin-0.5.10.tgz"
@@ -4589,6 +4596,11 @@ flat-cache@^3.0.4:
     flatted "^3.1.0"
     rimraf "^3.0.2"
 
+flatbuffers@^25.2.10:
+  version "25.9.23"
+  resolved "https://registry.npmjs.org/flatbuffers/-/flatbuffers-25.9.23.tgz"
+  integrity sha512-MI1qs7Lo4Syw0EOzUl0xjs2lsoeqFku44KpngfIduHBYvzm8h2+7K8YMQh1JtVVVrUvhLpNwqVi4DERegUJhPQ==
+
 flatted@^3.1.0:
   version "3.2.7"
   resolved "https://registry.npmjs.org/flatted/-/flatted-3.2.7.tgz"
@@ -6630,6 +6642,14 @@ open@^8.0.9, open@^8.4.0:
     define-lazy-prop "^2.0.0"
     is-docker "^2.1.1"
     is-wsl "^2.2.0"
+
+openmeteo@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.npmjs.org/openmeteo/-/openmeteo-1.2.1.tgz"
+  integrity sha512-BNps/RuJo0tIWhBiEvThO28Df3pU6q7m77wBhuS74FkvYYmrub9+KqzBiMd6XNPhWL4tPfG0iE3tXREy+pkwiQ==
+  dependencies:
+    "@openmeteo/sdk" "^1.21.1"
+    flatbuffers "^25.2.10"
 
 optionator@^0.8.1:
   version "0.8.3"

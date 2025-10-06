@@ -59,9 +59,9 @@ export const getSimpleWeatherData = async (latitude, longitude) => {
     
     // Get time information
     const range = daily.time();
-    const time = range;
-    const timeEnd = daily.timeEnd();
-    const interval = daily.interval();
+    const time = Number(range);
+    const timeEnd = Number(daily.timeEnd());
+    const interval = Number(daily.interval());
     
     console.log('Time range:', { time, timeEnd, interval });
     
@@ -72,7 +72,7 @@ export const getSimpleWeatherData = async (latitude, longitude) => {
     // Create time array
     const times = [];
     for (let i = 0; i < timeSteps; i++) {
-      const timestamp = (time + i * interval + utcOffsetSeconds) * 1000;
+      const timestamp = (time + i * interval + Number(utcOffsetSeconds)) * 1000;
       times.push(new Date(timestamp));
     }
     

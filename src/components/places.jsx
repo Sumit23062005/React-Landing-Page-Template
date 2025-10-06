@@ -94,19 +94,65 @@ export const PlacesSection = () => {
           <p>Search for a location to find nearby beaches</p>
         </div>
 
-        {/* Single Search Box with Autocomplete */}
+        {/* Enhanced Search Box with Autocomplete */}
         <div className="row">
-          <div className="col-md-8 col-md-offset-2">
+          <div className="col-md-10 col-md-offset-1">
             <div className="search-container">
-              <input
-                type="text"
-                className="form-control search-input"
-                placeholder="Search for a city or location (e.g., Mumbai, Goa)"
-                value={searchQuery}
-                onChange={handleSearchChange}
-              />
+              <div className="search-input-wrapper">
+                <i className="fas fa-search" style={{ 
+                  color: '#a0aec0', 
+                  fontSize: '16px', 
+                  marginLeft: '20px',
+                  transition: 'color 0.3s ease'
+                }}></i>
+                <input
+                  type="text"
+                  className="search-input"
+                  placeholder="🏖️ Search for a city or location (e.g., Mumbai, Goa, Bali)"
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                  onFocus={(e) => {
+                    e.target.previousElementSibling.style.color = '#667eea';
+                  }}
+                  onBlur={(e) => {
+                    e.target.previousElementSibling.style.color = '#a0aec0';
+                  }}
+                />
+                {searchQuery && (
+                  <button
+                    className="clear-search-btn"
+                    onClick={() => {
+                      setSearchQuery('');
+                      setSuggestions([]);
+                      setShowSuggestions(false);
+                      setBeaches([]);
+                    }}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: '#a0aec0',
+                      fontSize: '16px',
+                      marginRight: '20px',
+                      cursor: 'pointer',
+                      padding: '8px',
+                      borderRadius: '50%',
+                      transition: 'all 0.3s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.background = 'rgba(102, 126, 234, 0.1)';
+                      e.target.style.color = '#667eea';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.background = 'none';
+                      e.target.style.color = '#a0aec0';
+                    }}
+                  >
+                    <i className="fas fa-times"></i>
+                  </button>
+                )}
+              </div>
               
-              {/* Autocomplete Suggestions */}
+              {/* Enhanced Autocomplete Suggestions */}
               {showSuggestions && suggestions.length > 0 && (
                 <div className="suggestions-list">
                   {suggestions.map((place, index) => (
@@ -117,6 +163,11 @@ export const PlacesSection = () => {
                     >
                       <i className="fas fa-map-marker-alt"></i>
                       <span>{place.properties.formatted}</span>
+                      <i className="fas fa-arrow-right" style={{
+                        fontSize: '12px',
+                        color: '#cbd5e0',
+                        marginLeft: 'auto'
+                      }}></i>
                     </div>
                   ))}
                 </div>

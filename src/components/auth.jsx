@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { API_CONFIG } from '../config/apiConfig';
+import authService from '../services/authService';
+import apiClient from '../services/apiClient';
 
 export const AuthSection = ({ user, setUser }) => {
   const [isLogin, setIsLogin] = useState(true);
@@ -32,60 +35,85 @@ export const AuthSection = ({ user, setUser }) => {
       }
     }
 
-    // Simulate authentication
-    if (isLogin) {
-      // Login simulation
-      if (formData.email && formData.password) {
-        const userData = {
-          name: formData.email.split('@')[0],
-          email: formData.email,
-          joinDate: new Date().toISOString(),
-          preferences: {
-            favoriteLocations: [],
-            savedPlans: [],
-            notifications: true
-          }
-        };
-        
-        localStorage.setItem('coastAllyUser', JSON.stringify(userData));
-        setUser(userData);
-        setMessage('Login successful! Welcome to CoastAlly!');
-        
-        // Reset form
-        setFormData({
-          name: '',
-          email: '',
-          password: '',
-          confirmPassword: ''
-        });
-      } else {
-        setMessage('Please fill in all fields!');
-      }
+  // Login - call backend login API (no token storage per request)
+  if (isLogin) {
+    if (formData.email && formData.password) {
+      (async () => {
+        try {
+          const res = await authService.login({
+            email: formData.email,
+            password: formData.password,
+          });
+
+          console.log("Login Backend Response : "+res)
+
+          // Backend may return user data (email, user_id, name) and/or message
+          const userData = {
+            name: res?.name || formData.email.split('@')[0],
+            email: res?.email || formData.email,
+            user_id: res?.user_id,
+            joinDate: new Date().toISOString(),
+            preferences: res?.preferences || { favoriteLocations: [], savedPlans: [], notifications: true }
+          };
+
+          localStorage.setItem('coastAllyUser', JSON.stringify(userData));
+          setUser(userData);
+          setMessage(res?.message || 'Login successful! Welcome to CoastAlly!');
+
+          // Reset form
+          setFormData({ name: '', email: '', password: '', confirmPassword: '' });
+        } catch (err) {
+          console.error('Login error', err);
+          setMessage(err?.message || 'Login failed.');
+        }
+      })();
     } else {
-      // Signup simulation
+      setMessage('Please fill in all fields!');
+    }
+  } else {
+      // Signup - use authService
       if (formData.name && formData.email && formData.password) {
-        const userData = {
-          name: formData.name,
-          email: formData.email,
-          joinDate: new Date().toISOString(),
-          preferences: {
-            favoriteLocations: [],
-            savedPlans: [],
-            notifications: true
+        (async () => {
+          try {
+            const data = await authService.signup({
+              fullname: formData.name,
+              email: formData.email,
+              password: formData.password,
+            });
+
+            // If signup returns a token, store it centrally
+            if (data?.token) {
+              apiClient.setToken(data.token);
+            }
+
+            const userData = {
+              name: formData.name,
+              email: data.email || formData.email,
+              user_id: data.user_id,
+              joinDate: new Date().toISOString(),
+              preferences: {
+                favoriteLocations: [],
+                savedPlans: [],
+                notifications: true
+              }
+            };
+
+            localStorage.setItem('coastAllyUser', JSON.stringify(userData));
+            setUser(userData);
+            setMessage(data.message || 'Account created successfully!');
+
+            // Reset form
+            setFormData({
+              name: '',
+              email: '',
+              password: '',
+              confirmPassword: ''
+            });
+          } catch (err) {
+            console.error('Signup error', err);
+            setMessage(err?.message || 'Network error while signing up.');
           }
-        };
-        
-        localStorage.setItem('coastAllyUser', JSON.stringify(userData));
-        setUser(userData);
-        setMessage('Account created successfully! Welcome to CoastAlly!');
-        
-        // Reset form
-        setFormData({
-          name: '',
-          email: '',
-          password: '',
-          confirmPassword: ''
-        });
+        })();
       } else {
         setMessage('Please fill in all fields!');
       }

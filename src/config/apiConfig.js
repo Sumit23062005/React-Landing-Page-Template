@@ -25,6 +25,11 @@ export const API_CONFIG = {
   }
 };
 
+// Backend API configuration (CoastAlly backend)
+API_CONFIG.BACKEND = {
+  BASE_URL: 'https://coastal-ally-backend.onrender.com'
+};
+
 // Environment-specific configurations
 export const ENV_CONFIG = {
   development: {

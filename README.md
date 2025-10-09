@@ -1,4 +1,4 @@
-# React JS Landing Page Template
+# CoastAlly Frontend
 
 **
 
